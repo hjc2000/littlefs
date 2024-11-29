@@ -1,4 +1,5 @@
 #include "LfsFlashPort.h"
+#include <bsp-interface/di/console.h>
 
 void Lfs::LfsFlashPort::InitializeLfsPort()
 {
@@ -11,6 +12,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->Read(block, off, reinterpret_cast<uint8_t *>(buffer), size);
+            DI_Console().WriteLine("read ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -32,6 +34,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
                 have_write += self->_flash->ProgrammingSize();
             }
 
+            DI_Console().WriteLine("prog ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -46,6 +49,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->EraseSector(block);
+            DI_Console().WriteLine("erase ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)

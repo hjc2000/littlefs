@@ -11,6 +11,8 @@ namespace Lfs
         bsp::IFlash *_flash = nullptr;
         lfs_config _lfs{};
 
+        void InitializeLfsPort();
+
     public:
         /// @brief
         /// @param flash_name 要用来实现 lfs_config 接口的 flash 的名称。

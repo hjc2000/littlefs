@@ -1,9 +1,7 @@
 #include "LfsFlashPort.h"
 
-Lfs::LfsFlashPort::LfsFlashPort(std::string const &flash_name)
+void Lfs::LfsFlashPort::InitializeLfsPort()
 {
-    _flash = DI_FlashCollection().Get(flash_name);
-
     _lfs.context = this;
     _lfs.read_size = 1;
     _lfs.prog_size = _flash->ProgrammingSize();
@@ -40,6 +38,12 @@ Lfs::LfsFlashPort::LfsFlashPort(std::string const &flash_name)
     {
         return 0;
     };
+}
+
+Lfs::LfsFlashPort::LfsFlashPort(std::string const &flash_name)
+{
+    _flash = DI_FlashCollection().Get(flash_name);
+    InitializeLfsPort();
 }
 
 lfs_config const &Lfs::LfsFlashPort::Port() const

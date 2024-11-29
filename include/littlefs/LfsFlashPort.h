@@ -8,7 +8,7 @@ namespace Lfs
     class LfsFlashPort
     {
     private:
-        std::string _flash_name;
+        bsp::IFlash *_flash = nullptr;
 
     public:
         /// @brief

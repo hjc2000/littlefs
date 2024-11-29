@@ -1,5 +1,4 @@
 #include "LfsFlashPort.h"
-#include <bsp-interface/di/console.h>
 
 void Lfs::LfsFlashPort::InitializeLfsPort()
 {

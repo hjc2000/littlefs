@@ -3,9 +3,6 @@
 void Lfs::LfsFlashPort::InitializeLfsPort()
 {
     _lfs.context = this;
-    _lfs.read_size = 1;
-    _lfs.prog_size = _flash->ProgrammingSize();
-    _lfs.block_size = _flash->SectorSize();
 
     _lfs.read = [](lfs_config const *c, lfs_block_t block,
                    lfs_off_t off, void *buffer, lfs_size_t size) -> int
@@ -38,6 +35,14 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         return 0;
     };
+
+    _lfs.read_size = 1;
+    _lfs.prog_size = _flash->ProgrammingSize();
+    _lfs.block_size = _flash->SectorSize();
+    _lfs.block_count = _flash->SectorCount();
+    _lfs.block_cycles = 100;
+    _lfs.cache_size = 32;
+    _lfs.lookahead_size = _flash->SectorCount() / 8;
 }
 
 Lfs::LfsFlashPort::LfsFlashPort(std::string const &flash_name)

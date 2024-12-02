@@ -11,6 +11,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->Read(block, off, reinterpret_cast<uint8_t *>(buffer), size);
+            DI_Console().WriteLine("read" + std::to_string(size));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -32,6 +33,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
                 have_write += self->_flash->ProgrammingSize();
             }
 
+            DI_Console().WriteLine("prog" + std::to_string(size));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -46,6 +48,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->EraseSector(block);
+            DI_Console().WriteLine("erase" + std::to_string(block));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)

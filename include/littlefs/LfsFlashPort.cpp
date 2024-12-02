@@ -11,7 +11,6 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->Read(block, off, reinterpret_cast<uint8_t *>(buffer), size);
-            DI_Console().WriteLine("read ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -29,11 +28,10 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
             lfs_size_t have_write = 0;
             while (have_write < size)
             {
-                self->_flash->Program(block, off, reinterpret_cast<uint8_t const *>(buffer));
+                self->_flash->Program(block, off, reinterpret_cast<uint8_t const *>(buffer) + have_write);
                 have_write += self->_flash->ProgrammingSize();
             }
 
-            DI_Console().WriteLine("prog ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -48,7 +46,6 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         {
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->EraseSector(block);
-            DI_Console().WriteLine("erase ok");
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
@@ -124,7 +121,7 @@ void Lfs::TestLittleFs()
         "flash",
         base::Span{
             reinterpret_cast<uint8_t *>(0XC0000000),
-            32 * 1024 * 1024,
+            3 * 1024 * 1024,
         },
     };
 

@@ -9,13 +9,14 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
+            DI_Console().WriteLine("read" + std::to_string(size));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->Read(block, off, reinterpret_cast<uint8_t *>(buffer), size);
-            DI_Console().WriteLine("read" + std::to_string(size));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
         {
+            DI_Console().WriteLine("read catch");
             return lfs_error::LFS_ERR_IO;
         }
     };
@@ -25,6 +26,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
+            DI_Console().WriteLine("prog" + std::to_string(size));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             lfs_size_t have_write = 0;
             while (have_write < size)
@@ -33,11 +35,11 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
                 have_write += self->_flash->ProgrammingSize();
             }
 
-            DI_Console().WriteLine("prog" + std::to_string(size));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
         {
+            DI_Console().WriteLine("prog catch");
             return lfs_error::LFS_ERR_IO;
         }
     };
@@ -46,13 +48,14 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
+            DI_Console().WriteLine("erase" + std::to_string(block));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->EraseSector(block);
-            DI_Console().WriteLine("erase" + std::to_string(block));
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
         {
+            DI_Console().WriteLine("erase catch");
             return lfs_error::LFS_ERR_IO;
         }
     };
@@ -97,9 +100,9 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     _lfs.prog_size = _flash->ProgrammingSize();
     _lfs.block_size = _flash->SectorSize();
     _lfs.block_count = _flash->SectorCount();
-    _lfs.block_cycles = 100;
-    _lfs.cache_size = 128;
-    _lfs.lookahead_size = 128;
+    _lfs.block_cycles = -1;
+    _lfs.cache_size = 256;
+    _lfs.lookahead_size = 256;
 }
 
 Lfs::LfsFlashPort::LfsFlashPort(bsp::IFlash *flash)
@@ -118,13 +121,12 @@ lfs_config const &Lfs::LfsFlashPort::Port() const
 void Lfs::TestLittleFs()
 {
     // Lfs::LfsFlashPort port{DI_FlashCollection().Get("internal-flash")};
-    // Lfs::LfsFlashPort port{DI_FlashCollection().Get("internal-flash")};
 
     bsp::RmaFlash ram_flash{
         "flash",
         base::Span{
             reinterpret_cast<uint8_t *>(0XC0000000),
-            10 * 1024 * 1024,
+            32 * 1024 * 1024,
         },
     };
 
@@ -137,6 +139,8 @@ void Lfs::TestLittleFs()
     {
         DI_Console().WriteLine("format failed: " + std::to_string(res));
     }
+
+    DI_Console().WriteLine("666666");
 
     res = lfs_mount(&lfs, &port.Port()); // 挂载文件系统
     if (res)

@@ -21,6 +21,4 @@ namespace Lfs
         /// @return
         lfs_config const &Port() const;
     };
-
-    void TestLittleFs();
 } // namespace Lfs

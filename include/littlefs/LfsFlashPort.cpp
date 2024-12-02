@@ -124,7 +124,7 @@ void Lfs::TestLittleFs()
         "flash",
         base::Span{
             reinterpret_cast<uint8_t *>(0XC0000000),
-            3 * 1024 * 1024,
+            10 * 1024 * 1024,
         },
     };
 

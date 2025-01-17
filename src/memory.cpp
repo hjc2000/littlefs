@@ -11,11 +11,11 @@ extern "C"
         std::string msg = "lfs_malloc new " + std::to_string(size);
         if (p == nullptr)
         {
-            DI_Console().WriteLine(msg + " failed");
+            bsp::di::Console().WriteLine(msg + " failed");
         }
         else
         {
-            DI_Console().WriteLine(msg + " successfully");
+            bsp::di::Console().WriteLine(msg + " successfully");
         }
 
         return p;

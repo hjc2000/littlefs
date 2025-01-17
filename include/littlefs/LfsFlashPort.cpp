@@ -9,14 +9,14 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
-            DI_Console().WriteLine("read" + std::to_string(size));
+            bsp::di::Console().WriteLine("read" + std::to_string(size));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->Read(block, off, reinterpret_cast<uint8_t *>(buffer), size);
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
         {
-            DI_Console().WriteLine("read catch");
+            bsp::di::Console().WriteLine("read catch");
             return lfs_error::LFS_ERR_IO;
         }
     };
@@ -26,7 +26,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
-            DI_Console().WriteLine("prog" + std::to_string(size));
+            bsp::di::Console().WriteLine("prog" + std::to_string(size));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             lfs_size_t have_write = 0;
             while (have_write < size)
@@ -39,7 +39,7 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
         }
         catch (...)
         {
-            DI_Console().WriteLine("prog catch");
+            bsp::di::Console().WriteLine("prog catch");
             return lfs_error::LFS_ERR_IO;
         }
     };
@@ -48,14 +48,14 @@ void Lfs::LfsFlashPort::InitializeLfsPort()
     {
         try
         {
-            DI_Console().WriteLine("erase" + std::to_string(block));
+            bsp::di::Console().WriteLine("erase" + std::to_string(block));
             LfsFlashPort *self = reinterpret_cast<LfsFlashPort *>(c->context);
             self->_flash->EraseSector(block);
             return lfs_error::LFS_ERR_OK;
         }
         catch (...)
         {
-            DI_Console().WriteLine("erase catch");
+            bsp::di::Console().WriteLine("erase catch");
             return lfs_error::LFS_ERR_IO;
         }
     };

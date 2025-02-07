@@ -11,5 +11,3 @@ set(CMAKE_C_STANDARD 99)
 add_library(${ProjectName} STATIC)
 target_import_src(${ProjectName})
 target_import_bsp_interface(${ProjectName} PUBLIC)
-
-set(CMAKE_INSTALL_PREFIX $ENV{cpp_lib_build_scripts_path}/${platform}/.libs/${ProjectName}/)
